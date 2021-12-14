@@ -1,6 +1,7 @@
 package com.smassive.pizzacalculator.config.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.smassive.pizzacalculator.R
@@ -92,6 +94,7 @@ fun PizzaDoughConfigScreen(
       },
       keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
       keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+      modifier = Modifier.fillMaxWidth(),
     )
     Spacer(modifier = Modifier.height(8.dp))
     OutlinedTextField(
@@ -102,6 +105,7 @@ fun PizzaDoughConfigScreen(
       },
       keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
       keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+      modifier = Modifier.fillMaxWidth(),
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
@@ -113,24 +117,38 @@ fun PizzaDoughConfigScreen(
       style = MaterialTheme.typography.caption
     )
     Spacer(modifier = Modifier.height(16.dp))
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      Button(onClick = {
-        focusManager.clearFocus()
-        onYeastRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
-      }) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+
+      modifier = Modifier.fillMaxWidth(),
+    ) {
+      Button(
+        onClick = {
+          focusManager.clearFocus()
+          onYeastRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
+        },
+        modifier = Modifier.fillMaxWidth().weight(1f),
+      ) {
         Text(text = "Yeast")
       }
       Spacer(modifier = Modifier.width(8.dp))
-      Text(text = "- or -")
+      Text(
+        text = "- or -",
+        modifier = Modifier.fillMaxWidth().weight(0.3f),
+        textAlign = TextAlign.Center,
+      )
       Spacer(modifier = Modifier.width(8.dp))
-      Button(onClick = {
-        focusManager.clearFocus()
-        onSourdoughRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
-      }) {
+      Button(
+        onClick = {
+          focusManager.clearFocus()
+          onSourdoughRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
+        },
+        modifier = Modifier.fillMaxWidth().weight(1f),
+      ) {
         Text(text = "Sourdough")
       }
     }
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(modifier = Modifier.height(48.dp))
     Text(
       text = "Background",
       style = MaterialTheme.typography.h4,
