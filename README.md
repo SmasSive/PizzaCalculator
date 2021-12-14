@@ -29,3 +29,7 @@ So, the app will be updated/broken without prior notice, use it at your own risk
 
 - Sourdough result screen
   ![image](documentation/assets/sourdough_result.png)
+  
+## Next steps
+- Save last configuration
+- Add the ability to select the hydration percentage
