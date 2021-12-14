@@ -18,31 +18,25 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.LocalImageLoader
-import coil.compose.rememberImagePainter
-import coil.decode.SvgDecoder
 import com.smassive.pizzacalculator.R
 import com.smassive.pizzacalculator.ui.theme.PizzaCalculatorTheme
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun PizzaDoughConfigScreen(
   count: Int,
@@ -50,11 +44,6 @@ fun PizzaDoughConfigScreen(
   onYeastRequested: (count: Int, weight: Int) -> Unit,
   onSourdoughRequested: (count: Int, weight: Int) -> Unit,
 ) {
-  val imageLoader = ImageLoader.Builder(LocalContext.current)
-    .componentRegistry {
-      add(SvgDecoder(LocalContext.current))
-    }
-    .build()
   val scrollState = rememberScrollState()
 
   val TextFieldSaver = run {
@@ -84,30 +73,16 @@ fun PizzaDoughConfigScreen(
       .verticalScroll(scrollState),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    CompositionLocalProvider(LocalImageLoader provides imageLoader) {
-      Image(
-        painter = rememberImagePainter(
-          data = "https://raw.githubusercontent.com/hendricius/pizza-dough/master/calculator/src/images/logo.svg",
-          imageLoader = LocalImageLoader.current,
-          builder = {
-            placeholder(0)
-          }
-        ),
-        contentDescription = "Pizza Dough Logo",
-        modifier = Modifier.size(120.dp)
-      )
-      Image(
-        painter = rememberImagePainter(
-          data = "https://raw.githubusercontent.com/hendricius/pizza-dough/master/calculator/src/images/calculator.svg",
-          imageLoader = LocalImageLoader.current,
-          builder = {
-            placeholder(0)
-          }
-        ),
-        contentDescription = "Pizza Dough Calculator",
-        modifier = Modifier.size(150.dp, 40.dp)
-      )
-    }
+    Image(
+      painter = painterResource(id = R.drawable.logo),
+      contentDescription = "Pizza Dough Logo",
+      modifier = Modifier.size(120.dp)
+    )
+    Text(
+      text = "CALCULATOR",
+      style = MaterialTheme.typography.h5,
+      fontWeight = FontWeight.ExtraBold,
+    )
     Spacer(modifier = Modifier.height(16.dp))
     OutlinedTextField(
       value = numberOfPizzas.value,
@@ -186,8 +161,8 @@ fun DefaultPreview() {
     PizzaDoughConfigScreen(
       count = 2,
       weight = 200,
-      onYeastRequested = { _,_ -> },
-      onSourdoughRequested = { _,_ -> },
+      onYeastRequested = { _, _ -> },
+      onSourdoughRequested = { _, _ -> },
     )
   }
 }

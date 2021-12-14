@@ -54,9 +54,6 @@ dependencies {
   implementation("androidx.activity:activity-compose:${rootProject.extra["compose_version"]}")
   implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
 
-  implementation("io.coil-kt:coil-svg:1.4.0")
-  implementation("com.google.accompanist:accompanist-coil:0.15.0")
-
   implementation("io.insert-koin:koin-android:3.1.4")
 }
 
