@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">Pizza Calculator</string>
+
+  <string name="background_desc_1">Typically the pizza dough weighs between 200 and 250 grams. For a home oven 200 grams is a recommended size. Change this value depending on the size of your oven.</string>
+  <string name="background_desc_2">A real Neapolitan pizza consists of only flour water and salt. Traditionally sourdough has been used. Sourdough requires more advanced dough handling. Thus for beginners the yeast based dough is recommended.</string>
+  <string name="background_desc_3">The key is to have all the ingredients in the exact quantity. To calculate how much of each ingredient is used "Baker's Math" is applied. This means the ingredients are calculated based on the amount of flour that you are using. So lets say the ingredient would say 60%, that would mean per every 100 grams of flour you need to add 60 grams of water. This way you can easily scale up the amount of pizzas that you want to bake.</string>
+  <string name="sourdough_overall_flour_desc">The overall flour including the flour coming from the sourdough. This value is used as a basis for the calculation. The percentages of water, salt and sourdough are derived from this value. This value is just here for reference to visualize the calculation.</string>
+  <string name="sourdough_required_flour_desc">Some flour is already added from the sourdough to the dough. This reduces the additional flour needed. This value represents the additional flour that you need besides your sourdough flour.</string>
+</resources>
