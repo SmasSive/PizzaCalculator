@@ -18,3 +18,14 @@ This app is intended to be a pet project to try some things out like:
 - ...
 
 So, the app will be updated/broken without prior notice, use it at your own risk!
+
+## Screenshots
+
+- Main screen
+  ![image](documentation/assets/main_screen.png)
+  
+- Configuration screen
+  ![image](documentation/assets/configuration_screen.png)
+
+- Sourdough result screen
+  ![image](documentation/assets/sourdough_result.png)
