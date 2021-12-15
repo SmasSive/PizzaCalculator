@@ -10,8 +10,8 @@ android {
     applicationId = "com.smassive.pizzacalculator"
     minSdk = 23
     targetSdk = 31
-    versionCode = 1
-    versionName = "1.0"
+    versionCode = 11
+    versionName = "1.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
