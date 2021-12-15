@@ -11,7 +11,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -77,19 +79,30 @@ fun MainActivityScreen(mainViewModel: MainViewModel, onDoughCalculationRequested
   }.collectAsState(MainViewModel.State.Loading)
 
   when (state) {
-    is MainViewModel.State.Success -> {
-      val successState = state as MainViewModel.State.Success
+    is MainViewModel.State.Loaded -> {
+      val loadedState = state as MainViewModel.State.Loaded
+      var numberOfPizzas by remember { mutableStateOf(loadedState.doughConfig.count.toString()) }
+      var weightPerPizza by remember { mutableStateOf(loadedState.doughConfig.weight.toString()) }
       PizzaDoughConfigScreen(
-        count = successState.doughConfig.count,
-        weight = successState.doughConfig.weight,
+        numberOfPizzas = numberOfPizzas,
+        weightPerPizza = weightPerPizza,
+        onNumberOfPizzasChanged = {
+          numberOfPizzas = it
+          mainViewModel.validateForm(numberOfPizzas, weightPerPizza)
+        },
+        onWeightPerPizzaChanged = {
+          weightPerPizza = it
+          mainViewModel.validateForm(numberOfPizzas, weightPerPizza)
+        },
         onYeastRequested = { count, weight ->
           // TODO feature -> save last config?
-          onDoughCalculationRequested(DoughViewType.YEAST, count, weight)
+          onDoughCalculationRequested(DoughViewType.YEAST, count.toInt(), weight.toInt())
         },
         onSourdoughRequested = { count, weight ->
           // TODO feature -> save last config?
-          onDoughCalculationRequested(DoughViewType.SOURDOUGH, count, weight)
+          onDoughCalculationRequested(DoughViewType.SOURDOUGH, count.toInt(), weight.toInt())
         },
+        isValid = mainViewModel.validateForm(numberOfPizzas, weightPerPizza).collectAsState(true).value
       )
     }
     MainViewModel.State.Loading -> {

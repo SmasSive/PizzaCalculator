@@ -1,7 +1,6 @@
 package com.smassive.pizzacalculator.config.ui.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,20 +18,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.mapSaver
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,31 +35,15 @@ import com.smassive.pizzacalculator.ui.theme.PizzaCalculatorTheme
 
 @Composable
 fun PizzaDoughConfigScreen(
-  count: Int,
-  weight: Int,
-  onYeastRequested: (count: Int, weight: Int) -> Unit,
-  onSourdoughRequested: (count: Int, weight: Int) -> Unit,
+  numberOfPizzas: String,
+  weightPerPizza: String,
+  onNumberOfPizzasChanged: (String) -> Unit,
+  onWeightPerPizzaChanged: (String) -> Unit,
+  onYeastRequested: (count: String, weight: String) -> Unit,
+  onSourdoughRequested: (count: String, weight: String) -> Unit,
+  isValid: Boolean = true,
 ) {
   val scrollState = rememberScrollState()
-
-  val TextFieldSaver = run {
-    mapSaver(
-      save = { mapOf("text" to it.text, "index" to it.selection.end) },
-      restore = { TextFieldValue(it["text"] as String, TextRange(it["index"] as Int)) },
-    )
-  }
-  val numberOfPizzas = rememberSaveable(stateSaver = TextFieldSaver) {
-    mutableStateOf(TextFieldValue(
-      text = count.toString(),
-      selection = TextRange(count.toString().length)
-    ))
-  }
-  val weightPerPizza = rememberSaveable(stateSaver = TextFieldSaver) {
-    mutableStateOf(TextFieldValue(
-      text = weight.toString(),
-      selection = TextRange(weight.toString().length)
-    ))
-  }
   val focusManager = LocalFocusManager.current
 
   Column(
@@ -86,26 +64,18 @@ fun PizzaDoughConfigScreen(
       fontWeight = FontWeight.ExtraBold,
     )
     Spacer(modifier = Modifier.height(16.dp))
-    OutlinedTextField(
-      value = numberOfPizzas.value,
-      onValueChange = { numberOfPizzas.value = it },
-      label = {
-        Text(text = "Number of pizzas")
-      },
-      keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
-      keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-      modifier = Modifier.fillMaxWidth(),
+    OutlinedNumberField(
+      value = numberOfPizzas,
+      onValueChange = onNumberOfPizzasChanged,
+      label = "Number of pizzas",
+      focusManager = focusManager,
     )
     Spacer(modifier = Modifier.height(8.dp))
-    OutlinedTextField(
-      value = weightPerPizza.value,
-      onValueChange = { weightPerPizza.value = it },
-      label = {
-        Text(text = "Weight per pizza (grams)")
-      },
-      keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-      keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-      modifier = Modifier.fillMaxWidth(),
+    OutlinedNumberField(
+      value = weightPerPizza,
+      onValueChange = onWeightPerPizzaChanged,
+      label = "Weight per pizza (grams)",
+      focusManager = focusManager,
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
@@ -125,25 +95,33 @@ fun PizzaDoughConfigScreen(
       Button(
         onClick = {
           focusManager.clearFocus()
-          onYeastRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
+          onYeastRequested(numberOfPizzas, weightPerPizza)
         },
-        modifier = Modifier.fillMaxWidth().weight(1f),
+        modifier = Modifier
+          .fillMaxWidth()
+          .weight(1f),
+        enabled = isValid,
       ) {
         Text(text = "Yeast")
       }
       Spacer(modifier = Modifier.width(8.dp))
       Text(
         text = "- or -",
-        modifier = Modifier.fillMaxWidth().weight(0.3f),
+        modifier = Modifier
+          .fillMaxWidth()
+          .weight(0.3f),
         textAlign = TextAlign.Center,
       )
       Spacer(modifier = Modifier.width(8.dp))
       Button(
         onClick = {
           focusManager.clearFocus()
-          onSourdoughRequested(numberOfPizzas.value.text.toInt(), weightPerPizza.value.text.toInt())
+          onSourdoughRequested(numberOfPizzas, weightPerPizza)
         },
-        modifier = Modifier.fillMaxWidth().weight(1f),
+        modifier = Modifier
+          .fillMaxWidth()
+          .weight(1f),
+        enabled = isValid,
       ) {
         Text(text = "Sourdough")
       }
@@ -172,13 +150,34 @@ fun PizzaDoughConfigScreen(
   }
 }
 
+@Composable
+fun OutlinedNumberField(
+  value: String,
+  label: String,
+  onValueChange: (String) -> Unit,
+  focusManager: FocusManager,
+) {
+  OutlinedTextField(
+    value = value,
+    onValueChange = onValueChange,
+    label = {
+      Text(text = label)
+    },
+    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+    modifier = Modifier.fillMaxWidth(),
+  )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
   PizzaCalculatorTheme {
     PizzaDoughConfigScreen(
-      count = 2,
-      weight = 200,
+      numberOfPizzas = "2",
+      weightPerPizza = "200",
+      onNumberOfPizzasChanged = {},
+      onWeightPerPizzaChanged = {},
       onYeastRequested = { _, _ -> },
       onSourdoughRequested = { _, _ -> },
     )
