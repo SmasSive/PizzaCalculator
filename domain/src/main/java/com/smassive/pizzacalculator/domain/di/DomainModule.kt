@@ -1,5 +1,6 @@
 package com.smassive.pizzacalculator.domain.di
 
+import com.smassive.pizzacalculator.domain.config.ValidateDoughConfig
 import com.smassive.pizzacalculator.domain.model.BaseIngredientsBuilder
 import com.smassive.pizzacalculator.domain.sourdough.CalculateSourdoughDough
 import com.smassive.pizzacalculator.domain.yeast.CalculateYeastDough
@@ -9,4 +10,5 @@ val domainModule = module {
   single { CalculateYeastDough(get()) }
   single { CalculateSourdoughDough(get()) }
   single { BaseIngredientsBuilder() }
+  single { ValidateDoughConfig() }
 }

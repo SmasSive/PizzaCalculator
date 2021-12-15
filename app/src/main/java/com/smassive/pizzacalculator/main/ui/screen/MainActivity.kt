@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.smassive.pizzacalculator.common.ui.screen.LoadingScreen
 import com.smassive.pizzacalculator.config.ui.model.DoughViewType
 import com.smassive.pizzacalculator.config.ui.screen.PizzaDoughConfigScreen
+import com.smassive.pizzacalculator.domain.config.ValidateDoughConfig
 import com.smassive.pizzacalculator.main.ui.viewmodel.MainViewModel
 import com.smassive.pizzacalculator.result.ui.screen.PizzaDoughResultScreen
 import com.smassive.pizzacalculator.result.ui.viewmodel.ResultViewModel
@@ -117,6 +118,6 @@ fun MainActivityScreen(mainViewModel: MainViewModel, onDoughCalculationRequested
 @Composable
 fun DefaultPreview() {
   PizzaCalculatorTheme {
-    MainActivityScreen(MainViewModel())
+    MainActivityScreen(MainViewModel(ValidateDoughConfig()))
   }
 }
