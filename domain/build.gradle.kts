@@ -1,14 +1,14 @@
 plugins {
-  id("com.android.library")
-  id("kotlin-android")
+  alias(libs.plugins.androidLibrary)
+  alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-  compileSdk = 31
+  compileSdk = properties["smassive.android.compileSdk"].toString().toInt()
+  namespace = "com.smassive.pizzacalculator.domain"
 
   defaultConfig {
-    minSdk = 23
-    targetSdk = 31
+    minSdk = properties["smassive.android.minSdk"].toString().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -30,13 +30,13 @@ android {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-  implementation("androidx.annotation:annotation:1.3.0")
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.androidx.annotation)
 
-  implementation("io.insert-koin:koin-core:3.1.4")
+  implementation(libs.koin.core)
 
-  testImplementation("junit:junit:4.+")
-  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
-  testImplementation("io.insert-koin:koin-test:3.1.4")
-  testImplementation("io.insert-koin:koin-test-junit4:3.1.4")
+  testImplementation(libs.junit)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.koin.test)
+  testImplementation(libs.koin.test.junit4)
 }
